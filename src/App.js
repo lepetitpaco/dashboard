@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-
+import ScrollContainer from 'react-indiana-drag-scroll'
 import countries from 'i18n-iso-countries';
 
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
@@ -45,7 +45,7 @@ function App() {
         setState(getState);
     };
 
-
+    console.log(apiDataForecast);
 
     return (
     <div className="App">
@@ -65,7 +65,7 @@ function App() {
             <h2>Now</h2>
         </div>
 
-            <div className="" style={{ width: '100vw' }}>
+            <div className="todaycast">
                 {apiDataWeather.main ? (
                     <div class="text-center one-cast">
                         <div className="row">
@@ -88,39 +88,41 @@ function App() {
                 <h2 className="row">Forecast</h2>
 
                 {apiDataForecast.list ? (
-                    <div className="text-center forecastline">
+
+                    <ScrollContainer className="scroll-container forecastline" horizontal="true" hideScrollbars="true" children="div">
                         {apiDataForecast.list.map(oneday => {
-                            const day = new Date(oneday.dt * 1000).toLocaleDateString("fr-FR");
-                            const time = new Date(oneday.dt * 1000).toLocaleTimeString("fr-FR",{dday:'2-digit',hour: '2-digit', minute:'2-digit'});
+                            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                            var dayName = days[new Date(oneday.dt * 1000).getDay()];
+                            const time = new Date(oneday.dt * 1000).toLocaleTimeString("fr-FR",{day:'2-digit',month:'2-digit',year:'2-digit',hour: '2-digit', minute:'2-digit'});
                             return (
                             <div className="one-cast">
-                                <div className="">
+                                <div className="one-line">
                                     <img src={`http://openweathermap.org/img/w/${oneday.weather[0].icon}.png`} alt="weather status icon" className="weather-icon" />
                                 </div>
-                                <div className="">
+                                <div className="one-line">
                                     {oneday.main.temp}C
                                 </div>
-                                <div className="">
+                                <div className="one-line">
                                     {oneday.weather[0].main}
                                 </div>
-                                <div className="">
+                                <div className="one-line">
                                     <div>{apiDataForecast.city.name},{apiDataForecast.city.country}</div>
                                 </div>
-                                <div className="">
-                                    {day} - {time}
+                                <div className="one-line">
+                                    {dayName} {time}
                                 </div>
                             </div>
                             );
                         }
 
                         )}
-                    </div>
+                    </ScrollContainer>
 
                     ) : (
                     <h1>Loading</h1>
                     )}
-
                 </div>
+
             </div>
             );
         }
