@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.forecastline{
+    display:flex; flex: 1; flexDirection: row; justifyContent: space-between; overflow-x:scroll; scroll-behavior: smooth;
+}
+
+
+.one-cast{
+    width: 400px;
+    padding:0 30px;
+    margin:auto 30px;
+    background-color: #dedede;
+}
